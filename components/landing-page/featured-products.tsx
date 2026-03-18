@@ -3,28 +3,12 @@ import Link from 'next/link'
 import SectionHeader from '../common/section-header'
 import { Button } from '../ui/button'
 import ProductCard from '../products/product-card'
+import { getFeaturedProducts } from '@/lib/products/product-select'
 
+const FeaturedProducts = async () => {
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: 'AwesomeApp',
-    description: 'A toolkit for everything',
-    tags: ['SaaS', 'Global'],
-    votes: 524,
-    isFeatured: true
-  },
-  {
-    id: 2,
-    name: 'AwesomeApp DD',
-    description: 'A toolkit for everything',
-    tags: ['SaaS', 'Global', 'Finances'],
-    votes: 300,
-    isFeatured: true
-  }
-]
+  const featuredProducts = await getFeaturedProducts()
 
-const FeaturedProducts = () => {
   return (
     <section className='py-20 bg-muted/20'>
       <div className='wrapper'>
