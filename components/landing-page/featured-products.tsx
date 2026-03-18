@@ -1,3 +1,5 @@
+'use cache'
+
 import { ArrowUpRightIcon, StarIcon } from 'lucide-react'
 import Link from 'next/link'
 import SectionHeader from '../common/section-header'
