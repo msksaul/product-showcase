@@ -44,8 +44,8 @@ const Header = () => {
 
           <div className='flex items-center gap-3'>
             <Show when={'signed-out'}>
-              <SignInButton />
-              <SignUpButton>
+              <SignInButton mode='modal'/>
+              <SignUpButton mode='modal'>
                 <Button>Sign Up</Button>
               </SignUpButton>
             </Show>
