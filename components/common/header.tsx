@@ -1,8 +1,9 @@
 import { CompassIcon, HomeIcon, LoaderIcon, SparkleIcon, SparklesIcon } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { Show, SignInButton, SignUpButton } from '@clerk/nextjs'
 import { Suspense } from 'react'
+import CustomUserButton from './custom-user-button'
 
 const Logo = () => {
   return (
@@ -65,7 +66,7 @@ const Header = () => {
                   </Link>
                 </Button>
 
-                <UserButton />
+                <CustomUserButton />
               </Show>
             </Suspense>
           </div>
