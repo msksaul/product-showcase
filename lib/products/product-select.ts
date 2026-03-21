@@ -24,6 +24,16 @@ export async function getAllProducts() {
   return productsData
 }
 
+export async function getAllApprovedProducts() {
+  const productsData = await db
+    .select()
+    .from(products)
+    .where(eq(products.status, "approved"))
+    .orderBy(desc(products.voteCount));
+
+  return productsData;
+}
+
 export async function getRecentlyLaunchedProducts() {
   await connection()
   const productsData = await getAllProducts()
