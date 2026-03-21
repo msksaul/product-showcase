@@ -13,7 +13,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   const hasVoted = false
 
   return (
-    <Link href={`/products/${product.id}`}>
+    <Link href={`/products/${product.slug}`}>
       <Card className='group card-hover hover:bg-primary-foreground/10 border-solid border-gray-400 min-h-50'>
         <CardHeader className='flex flex-1 flex-row justify-between'>
           <div className='flex flex-col items-start gap-4'>

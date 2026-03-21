@@ -33,6 +33,10 @@ export async function getRecentlyLaunchedProducts() {
   return productsData.filter(
     product => product.createdAt && new Date(product.createdAt.toISOString()) >= oneWeekAgo
   )
+}
 
-  return productsData
+export async function getProductBySlug(slug: string) {
+  const product = await db.select().from(products).where(eq(products.slug, slug)).limit(1)
+
+  return product[0] ?? null
 }
