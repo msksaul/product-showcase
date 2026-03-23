@@ -15,10 +15,12 @@ export async function getFeaturedProducts() {
 }
 
 export async function getAllProducts() {
+  'use cache'
+  'cache: revalidate=1800'
+
   const productsData = await db
     .select()
     .from(products)
-    .where(eq(products.status, 'approved'))
     .orderBy(desc(products.createdAt))
 
   return productsData
