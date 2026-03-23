@@ -1,13 +1,12 @@
 import {
+  index,
+  json,
   pgTable,
   serial,
   text,
-  varchar,
-  integer,
   timestamp,
-  json,
   uniqueIndex,
-  index,
+  varchar
 } from "drizzle-orm/pg-core";
 
 // ============= PRODUCTS =============
@@ -27,7 +26,7 @@ export const products = pgTable(
     tags: json("tags").$type<string[]>(), // e.g. ["AI", "Productivity"]
 
     // Voting
-    voteCount: integer("vote_count").notNull().default(0),
+    votes: json('votes').$type<string[]>().default([]),
 
     // Metadata
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

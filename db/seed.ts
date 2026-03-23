@@ -5,6 +5,11 @@ import { allProducts } from "./data";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
+function generateVotes(count: number) {
+  return Array.from({ length: count }, (_, i) => `user_${i + 1}`);
+}
+
+
 async function main() {
   console.log("🌱 Seeding database...");
 
@@ -14,6 +19,8 @@ async function main() {
 
   // Insert products from data.ts
   for (const product of allProducts) {
+    const votes = generateVotes(10)
+
     await db.insert(products).values({
       name: product.name,
       slug: product.slug,
@@ -21,7 +28,7 @@ async function main() {
       description: product.description,
       websiteUrl: product.websiteUrl,
       tags: product.tags,
-      voteCount: product.voteCount || 0,
+      votes,
       createdAt: product.createdAt,
       approvedAt: product.approvedAt,
       status: product.status,
@@ -39,8 +46,10 @@ async function main() {
 
   console.log("\n📦 Products in database:");
   insertedProducts.forEach((product) => {
+    const voteCount = product.votes?.length ?? 0
+
     console.log(
-      `  - ${product.name} (${product.slug}) - ${product.voteCount} votes`
+      `  - ${product.name} (${product.slug}) - ${voteCount} votes`
     );
   });
 }

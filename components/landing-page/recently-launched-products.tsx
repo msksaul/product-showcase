@@ -4,7 +4,7 @@ import ProductCard from '../products/product-card'
 import EmptyState from '../common/empty-state'
 import { getRecentlyLaunchedProducts } from '@/lib/products/product-select'
 
-const RecentlyLaunchedProducts = async () => {
+const RecentlyLaunchedProducts = async ({ userId }: { userId: string | null }) => {
 
   const recentlyLaunchedProducts = await getRecentlyLaunchedProducts()
 
@@ -20,7 +20,7 @@ const RecentlyLaunchedProducts = async () => {
         {recentlyLaunchedProducts.length > 0 ? (
           <div className='grid-wrapper'>
             {recentlyLaunchedProducts.map(product => (
-              <ProductCard key={product.id} product={product}/>
+              <ProductCard key={product.id} product={product} userId={userId}/>
             ))}
           </div>
         ): (

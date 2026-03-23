@@ -9,7 +9,6 @@ export async function getFeaturedProducts() {
     .select()
     .from(products)
     .where(eq(products.status, 'approved'))
-    .orderBy(desc(products.createdAt))
 
   return productsData
 }
@@ -31,7 +30,7 @@ export async function getAllApprovedProducts() {
     .select()
     .from(products)
     .where(eq(products.status, "approved"))
-    .orderBy(desc(products.voteCount));
+    .orderBy(desc(products.votes));
 
   return productsData;
 }

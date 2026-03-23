@@ -1,13 +1,14 @@
 'use cache'
 
+import { getFeaturedProducts } from '@/lib/products/product-select'
 import { ArrowUpRightIcon, StarIcon } from 'lucide-react'
 import Link from 'next/link'
 import SectionHeader from '../common/section-header'
-import { Button } from '../ui/button'
 import ProductCard from '../products/product-card'
-import { getFeaturedProducts } from '@/lib/products/product-select'
+import { Button } from '../ui/button'
 
-const FeaturedProducts = async () => {
+const FeaturedProducts = async ({ userId }: { userId: string | null }) => {
+
 
   const featuredProducts = await getFeaturedProducts()
 
@@ -28,7 +29,7 @@ const FeaturedProducts = async () => {
         </div>
         <div className='grid-wrapper'>
           {featuredProducts.map(product => (
-            <ProductCard key={product.id} product={product}/>
+            <ProductCard key={product.id} product={product} userId={userId}/>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   downvoteProductAction,
   upvoteProductAction,
@@ -53,10 +54,10 @@ export default function VotingButtons({
         className={cn(
           "h-8 w-8 text-primary ",
           hasVoted
-            ? "bg-primary/10 text-primary hover:bg-primary/20"
+            ? "opacity-50 cursor-not-allowed"
             : "hover:bg-primary/10 hover:text-primary"
         )}
-        disabled={isPending}
+        disabled={isPending || hasVoted}
       >
         <ChevronUpIcon className="size-5" />
       </Button>
@@ -67,7 +68,7 @@ export default function VotingButtons({
         onClick={handleDownvote}
         variant="ghost"
         size="icon-sm"
-        disabled={isPending}
+        disabled={isPending || !hasVoted}
         className={cn(
           "h-8 w-8 text-primary ",
           hasVoted ? "hover:text-destructive" : "opacity-50 cursor-not-allowed"

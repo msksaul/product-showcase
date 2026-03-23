@@ -8,9 +8,14 @@ import VotingButtons from './voting-buttons';
 
 type Product = InferSelectModel<typeof products>
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product, userId }: { product: Product, userId: string | null }) => {
 
-  const hasVoted = false
+  const votes = product.votes ?? []
+
+  const hasVoted = userId ? votes.includes(userId) : false
+  console.log(hasVoted)
+
+  const voteCount = votes.length
 
   return (
     <Link href={`/products/${product.slug}`}>
@@ -22,7 +27,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 <CardTitle className='text-lg group-hover:text-primary transition-colors'>
                   {product.name}
                 </CardTitle>
-                {product.voteCount > 100 &&
+                {voteCount > 10 &&
                   <Badge className='gap-1 bg-primary text-primary-foreground'>
                     <StarIcon className='size-3 fill-current'/> Featured
                   </Badge>
@@ -34,7 +39,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           
           <VotingButtons 
             hasVoted={hasVoted}
-            voteCount={product.voteCount}
+            voteCount={voteCount}
             productId={product.id}
           />
         </CardHeader>

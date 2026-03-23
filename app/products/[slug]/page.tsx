@@ -1,10 +1,9 @@
-'use cache'
-
 import SectionHeader from '@/components/common/section-header'
 import VotingButtons from '@/components/products/voting-buttons'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { getFeaturedProducts, getProductBySlug } from '@/lib/products/product-select'
+import { auth } from '@clerk/nextjs/server'
 import { ArrowLeftIcon, CalendarIcon, ExternalLinkIcon, StarIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -25,7 +24,13 @@ const Product = async ({ params }: { params: Promise<{ slug: string }>}) => {
 
   if(!product) return notFound()
 
-  const { name, description, websiteUrl, tags, voteCount, tagline } = product
+  const { name, description, websiteUrl, tags, votes, tagline } = product
+
+  const voteCount = votes?.length ?? 0
+
+  const { userId } = await auth()
+
+  const hasVoted = userId ? votes?.includes(userId) : false
 
   return (
     <div className="py-16">
@@ -98,7 +103,7 @@ const Product = async ({ params }: { params: Promise<{ slug: string }>}) => {
                   <p className="text-sm text-muted-foreground mb-2">
                     Support this product
                   </p>
-                  <VotingButtons productId={product.id} voteCount={voteCount} />
+                  <VotingButtons productId={product.id} voteCount={voteCount} hasVoted={hasVoted} />
                 </div>
                 {voteCount > 100 && (
                   <div className="pt-6 border-t">

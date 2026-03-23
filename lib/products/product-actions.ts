@@ -1,13 +1,13 @@
 'use server'
 
-import { FormState } from '@/types'
-import { auth, currentUser } from '@clerk/nextjs/server'
-import { productSchema } from './product-validations'
 import { db } from '@/db'
 import { products } from '@/db/schema'
-import z from 'zod'
-import { eq, sql } from 'drizzle-orm'
+import { FormState } from '@/types'
+import { auth, currentUser } from '@clerk/nextjs/server'
+import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
+import z from 'zod'
+import { productSchema } from './product-validations'
 
 export const addProductAction = async (_prevState: FormState, formData: FormData) => {
   try {
@@ -106,8 +106,21 @@ export const upvoteProductAction = async (productId: number) => {
       };
     }
 
+    const result = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, productId))
+
+    const product = result[0]
+
+    if(!product) return
+
+    const votes = product.votes ?? []
+
+    if(votes.includes(userId)) return
+
     await db.update(products).set({
-      voteCount: sql`GREATEST(0, vote_count + 1)`
+      votes: [...votes, userId]
     })
     .where(eq(products.id, productId))
 
@@ -148,10 +161,21 @@ export const downvoteProductAction = async (productId: number) => {
       };
     }
 
-    await db.update(products).set({
-      voteCount: sql`GREATEST(0, vote_count - 1)`
-    })
-    .where(eq(products.id, productId))
+    const result = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, productId))
+
+    const product = result[0]
+    
+    if(!product) return
+
+    const votes = (product.votes ?? []).filter(id => id !== userId)
+
+    await db
+      .update(products)
+      .set({ votes })
+      .where(eq(products.id, productId))
 
     revalidatePath('/')
 
